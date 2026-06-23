@@ -1,0 +1,26 @@
+# Large data files — supply locally, do not commit
+data/candidates.jsonl
+data/candidates.jsonl.gz
+*.jsonl
+*.jsonl.gz
+
+# Generated outputs — regenerate with rank.py
+outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

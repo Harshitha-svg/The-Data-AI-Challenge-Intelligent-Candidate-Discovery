@@ -1,0 +1,92 @@
+# Redrob Hackathon — Submission Metadata
+# ⚠️  Fill in YOUR_TEAM_NAME, contact info, GitHub URL, and sandbox link before submitting.
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "YOUR_TEAM_NAME"          # ← replace with your registered participant/team ID
+
+primary_contact:
+  name: "YOUR_FULL_NAME"             # ← replace
+  email: "YOUR_EMAIL@example.com"    # ← replace
+  phone: "+91-XXXXXXXXXX"            # ← replace
+
+team_members:
+  - name: "YOUR_FULL_NAME"           # ← replace
+    email: "YOUR_EMAIL@example.com"  # ← replace
+    role: "ML Engineer"
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "https://github.com/YOUR_USERNAME/redrob-ranker"   # ← replace
+
+sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/redrob-ranker"
+# ← replace with your deployed Streamlit / HF Spaces / Colab link.
+#   The sandbox/app.py Streamlit app in this repo is ready to deploy directly.
+
+reproduce_command: "python rank.py --candidates ./data/candidates.jsonl --out ./outputs/submission.csv"
+
+# ============================================================================
+# Compute environment
+# ============================================================================
+compute:
+  platform: "Linux (Ubuntu 24.04) — tested on 1-core sandbox, targets 4-core CPU"
+  cpu_cores: 4
+  ram_gb: 16
+  python_version: "3.12"
+  os: "Ubuntu 24.04 LTS"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+ai_tools_used:
+  - "Claude (Anthropic)"
+
+ai_usage_summary: |
+  Claude was used as a coding and analysis assistant throughout development:
+  dataset exploration, feature-engineering design, scoring architecture
+  discussion, and code writing. All design decisions, parameter choices, and
+  logic were made by the team and are fully understood and defensible. No
+  candidate data was fed to any hosted LLM. The ranking pipeline itself calls
+  no external APIs — it is entirely local (TF-IDF + rule-based scoring).
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+methodology_summary: |
+  Hybrid rule-based + TF-IDF ranker; fully CPU-local, no hosted models.
+  Score = title_gate × blend(skill, semantic, experience, location, education)
+          × trap_penalty × behavioral_multiplier.
+
+  Title gate: all 47 distinct titles mapped to a gate weight (0.03–1.0),
+  ensuring wrong-title candidates score near-zero regardless of skill keywords
+  (directly operationalising the JD's keyword-stuffer warning).
+
+  Skill score: three-tier classification (CORE_AI / BROAD_AI / CV_SPEECH)
+  with proficiency and an endorsement+duration trust multiplier to discount
+  keyword stuffing. Semantic score: single TF-IDF (20 K features, 1–2 grams,
+  sublinear TF) over all candidate doc-texts, cosine-similarity against the JD.
+
+  Trap penalties multiply down candidates with entire IT-services careers,
+  CV-only skills (no NLP), job-hopping, or <12-month LangChain-only "AI"
+  experience. Behavioral multiplier (Redrob signals) rewards open-to-work,
+  recent activity, high recruiter response rate, and short notice periods.
+
+  62 honeypot candidates (impossible profile data — future certs, expert+0-
+  duration skills, duration/date contradictions) are hard-excluded. Runtime
+  ~76 s on a single CPU core, ~2 GB RAM peak.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
